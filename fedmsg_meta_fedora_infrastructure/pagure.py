@@ -130,9 +130,12 @@ class PagureProcessor(BaseProcessor):
                 return tmpl.format(
                     base_url=base_url, project=project, id=issueid)
         elif 'pagure.pull-request' in msg['topic']:
-            prid = msg['msg']['pullrequest']['id']
+            for k in ['pullrequest', 'pull_request', 'pull-request']:
+                if 'pullrequest' in msg['msg']:
+                    key = k
+            prid = msg['msg'][key]['id']
             if 'comment' in msg['topic']:
-                comments = msg['msg']['pullrequest']['comments']
+                comments = msg['msg'][key]['comments']
                 if comments:
                     tmpl += '/pull-request/{id}#comment-{comment}'
                     return tmpl.format(
