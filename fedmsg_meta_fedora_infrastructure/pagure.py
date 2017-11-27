@@ -234,6 +234,22 @@ class PagureProcessor(BaseProcessor):
                 '{user} removed the {tags} tags from ticket {project}#{id}')
             return tmpl.format(
                 user=user, project=project, id=issueid, tags=tags)
+        elif 'pagure.pull-request.tag.added' in msg['topic']:
+            issueid = msg['msg']['pull_request']['id']
+            tags = msg['msg']['tags']
+            tags = fedmsg.meta.base.BaseConglomerator.list_to_series(tags)
+            tmpl = self._(
+                '{user} tagged pull-request {project}#{id}: {tags}')
+            return tmpl.format(
+                user=user, project=project, id=issueid, tags=tags)
+        elif 'pagure.pull-request.tag.removed' in msg['topic']:
+            issueid = msg['msg']['pull_request']['id']
+            tags = msg['msg']['tags']
+            tags = fedmsg.meta.base.BaseConglomerator.list_to_series(tags)
+            tmpl = self._(
+                '{user} removed the {tags} tags from pull-request {project}#{id}')
+            return tmpl.format(
+                user=user, project=project, id=issueid, tags=tags)
         elif 'pagure.issue.assigned.added' in msg['topic']:
             issueid = msg['msg']['issue']['id']
             assignee = ''
