@@ -428,6 +428,20 @@ class PagureProcessor(BaseProcessor):
                 '{user} deleted the project "{project}"'
             )
             return tmpl.format(user=user, project=project)
+        elif 'pagure.commit.flag.added' in msg['topic']:
+            tmp = self._(
+                '{user} added a flag on the commit {commit} of the '
+                'project {project}'
+            )
+            user = msg['msg']['flag']['commit_hash'][:8]
+            return tmpl.format(user=user, project=project)
+        elif 'pagure.commit.flag.updated' in msg['topic']:
+            tmp = self._(
+                '{user} updated its flag on the commit {commit} of the '
+                'project {project}'
+            )
+            user = msg['msg']['flag']['commit_hash'][:8]
+            return tmpl.format(user=user, project=project)
 
         else:
             pass
